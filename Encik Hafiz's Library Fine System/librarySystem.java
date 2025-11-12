@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-public class main1 {
+public class librarySystem {
 
     public class LibraryFineCalculator {
         //putting into main class(method) with static final will cause illegal modifier error
