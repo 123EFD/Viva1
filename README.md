@@ -1,65 +1,74 @@
-# Viva1 Repository
+# Why static final cannot put in public static void main(String\[] args) \*\*this is a method
 
-Welcome to the **Viva1** repository\! This guide will show a beginner how to download (clone) a complete copy of this project to your local computer using **Git** and the **command line**.
+### Summary:
 
------
+You declared variables with the modifier static (e.g., static final BigDecimal ...) in a context where static is not allowed — most commonly inside a method or (less commonly) inside a method parameter list. Java permits static only for class-level fields, not for local variables or parameters.
 
-## Prerequisites 🛠️
+#### Reference: [https://share.google/aimode/3broCDPVM5TL5OAhh](https://share.google/aimode/3broCDPVM5TL5OAhh)
 
-Before you begin, you need to have **Git** installed on your computer. Git is the tool that allows your computer to communicate with GitHub.
+The compiler error you saw — "Illegal modifier for parameter general\_books\_tier2; only final is permitted" — means you used a modifier that Java doesn't allow in that context. The usual causes are:
 
-  * **Check if Git is installed:** Open your terminal (or Command Prompt/PowerShell on Windows) and type the following command:
-    ```bash
-    git --version
-    ```
-    If you see a version number (e.g., `git version 2.30.0`), you're all set\! If not, please download and install Git from the official website: [Git SCM](https://www.google.com/search?q=https://git-scm.com/downloads).
+* You put `static` (or `private`, `public`) on a local variable inside a method. Local variables cannot be `static` (only class-level fields can). You may use `final` for local variables, but not `static`.
+* Or, less commonly, you accidentally inserted the declaration where the compiler thinks it's a method parameter (for example, inside parentheses) — method parameters can only be `final` (not `static`/`private`/`public`).
 
------
+Why the first snippet “worked” and the second didn’t
 
-## How to Clone the Repository (Beginner's Guide) ⬇️
+* The first snippet is valid if it was declared at class scope (as class fields). `static final` is legal for fields defined directly in a class.
+* The second snippet produced the error because those `static final` declarations were placed where `static` isn't allowed — most likely inside a method (e.g., inside main) or inadvertently inside a parameter list.
 
-"Cloning" means creating a complete, local copy of all the files and history from this GitHub repository.
+How to fix it You have two options depending on where you want the constants to live.
 
-### Step 1: Open Your Terminal/Command Prompt
+1. Put them at class level (recommended for constants used across methods)
 
-Open your computer's command line interface:
+* Use `static final` at the top of your class (outside any method).
 
-  * **macOS/Linux:** Use **Terminal**
-  * **Windows:** Use **Command Prompt** or **PowerShell**
+Example (class-level constants):
 
-### Step 2: Navigate to the Desired Folder
+```java
+import java.math.BigDecimal;
 
-Use the `cd` (change directory) command to move into the location where you want to save the project folder.
+public class LibraryFineCalculator {
+    // class-level constants: OK to use static final
+    private static final BigDecimal ZERO = BigDecimal.ZERO;
+    private static final BigDecimal MAGAZINES_FINE = new BigDecimal("0.20");
+    private static final BigDecimal GENERAL_BOOKS_TIER1 = new BigDecimal("0.50");
+    private static final BigDecimal GENERAL_BOOKS_TIER2 = new BigDecimal("1.00");
+    private static final BigDecimal GENERAL_BOOKS_TIER3 = new BigDecimal("2.00");
+    private static final BigDecimal THESIS_FINE = new BigDecimal("10.00");
+    private static final BigDecimal REF_BOOKS_FINE = new BigDecimal("100.00");
+    private static final BigDecimal THESIS_OVERDUE = new BigDecimal("200.00");
 
-  * **Example:** To go to a folder called `Projects` on your Desktop:
-    ```bash
-    cd Desktop/Projects 
-    ```
-    (Tip: If the folder doesn't exist, you can create it first using `mkdir Projects`.)
+    private static final BigDecimal PENALTY_OVER_60 = new BigDecimal("25.00");
+    private static final BigDecimal PENALTY_HABITUAL = new BigDecimal("10.00");
+    private static final BigDecimal STAFF_DISCOUNT = new BigDecimal("0.20");
+    private static final BigDecimal GOODBORROWER_DISCOUNT = new BigDecimal("0.50");
 
-### Step 3: Run the Clone Command
-
-Once you are in the correct folder, execute the following command. This command uses the specific URL for the **Viva1** repository:
-
-```bash
-git clone https://github.com/123EFD/Viva1
+    public static void main(String[] args) {
+        // ...
+    }
+}
 ```
 
-### Step 4: Verification
+2. If you must declare them inside a method (not recommended for widely used constants), drop `static` and make them `final` or plain local variables:
 
-After the command runs successfully, you will see a message confirming the cloning process. You will now have a new folder named `Viva1` in the directory you selected in Step 2.
+* Local variables cannot be `static`. Use `final` if you want them immutable.
 
-  * You can navigate into the new folder:
-    ```bash
-    cd Viva1
-    ```
-  * You now have all the project files locally and are ready to start working\!
+Example (method-local constants):
 
------
+```java
+public static void main(String[] args) {
+    final BigDecimal ZERO = BigDecimal.ZERO;
+    final BigDecimal magazines_fine = new BigDecimal("0.20");
+    final BigDecimal general_books_tier1 = new BigDecimal("0.50");
+    final BigDecimal general_books_tier2 = new BigDecimal("1.00");
+    // ...
+}
+```
 
-## Next Steps
+Extra recommendations
 
-1.  **Open the project** in your favorite text editor (like VS Code, Sublime Text, or Atom) to view and edit the files.
-2.  **Start working** on the code or documentation.
+* Naming: by convention, constants use ALL\_CAPS\_WITH\_UNDERSCORES (e.g., GENERAL\_BOOKS\_TIER1) — this makes intent clearer.
+* BigDecimal: instantiate with string literals (`new BigDecimal("0.20")`) — avoids floating-point precision issues like new BigDecimal(0.2).
+* Scope: prefer class-level `private static final` for constants that are reused across methods. Use `final` local vars only for one-off values inside a single method.
+* If you still see an error, check you didn't accidentally paste these declarations inside a method parameter list (inside parentheses) or inside another method signature.
 
-Happy coding\! 🎉
