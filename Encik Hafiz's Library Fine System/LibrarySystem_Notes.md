@@ -130,13 +130,7 @@ Additional rules:
 
 ---
 
-## 11. Next steps (optional extensions)
-- Move per-book fine calculation into each `BookType` enum constant (strategy-style) for better encapsulation.
-- Add unit tests (JUnit) for `calculateBaseFine`, `applyPenalties`, and `applyDiscounts`.
-- Add a CLI flag or config file to toggle verbose validation messages vs strict-mode for auto-grader compatibility.
 
----
 
-If you want, I can also produce:
-- A short slide deck outline (5–7 slides) based on this content, or
-- A JUnit test file that exercises the main boundary cases.
+
+
