@@ -68,6 +68,7 @@ public class Question4 {
             }else {
                 lucky = "No";
             }
+        }
             
             System.out.println("Birth Date: " + dd + "/" + mm + "/" + year);
             System.out.println("Gender: " + gender);
@@ -75,7 +76,7 @@ public class Question4 {
             System.out.println("Lucky Winner: " + lucky );
             
             sc.close();
-        }
+        
 }
 }
 
