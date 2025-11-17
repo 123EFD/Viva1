@@ -148,7 +148,7 @@ public static void main(String[] args) {
         System.out.print("Enter hour (24-hour format): ");
         time = data.nextInt();
     } 
-    while (0> time || time >23); // check: if the enyered time is valid: 0 <= time <= 23
+    while (0> time || time <23); // check: if the enyered time is valid: 0 <= time <= 23
 
 /**************************************************************************************** */
 
