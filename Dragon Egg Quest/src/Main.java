@@ -64,14 +64,34 @@ public class Main {
             else if (result.contains("Cursed Chest")) {
                 System.out.println("Oh no! You opened a Cursed Chest!");
                 attempts -= 1; // Penalty for cursed chest, will lose 2 attempts in total
+
+                giveHints(choice, eggPositions);
             } 
             
             else if (result.equals("Empty")) {
                 System.out.println("This chest is empty.");
+                giveHints(choice, eggPositions);
+            }
+             attempts--; // Decrement attempts after each try
+            System.out.println("Eggs Found: " + eggsFound + ", Attempts Left: " + attempts + "\n");
+        }
 
-                //Finding the number of chests to the nearest one containing egg
+        //End of game
+        if (eggsFound == 3) {
+            System.out.println("Congratulations! All of the dragon eggs are safe!");
+        } else if (attempts == 0) {
+            System.out.println("Game over! Some dragon eggs remain hidden!");
+            System.out.println("You found " + eggsFound + " Magical Dragon Eggs. Better luck next time!");
+        }
+
+        scanner.close();
+    }   
+            // Finding the number of chests to the nearest one containing egg
+            public static void giveHints(int choice, List<Integer> eggPositions) {
+
                 int nearestEggDistance = Integer.MAX_VALUE;
                 int nearestEggChest = -1;
+                 
                 for (int eggPos : eggPositions) { //list storing the positions of all chests containing eggs
                     int distance = Math.abs(eggPos - choice);
                     if (distance < nearestEggDistance) {
@@ -100,19 +120,4 @@ public class Main {
 
                 System.out.println("No egg here. Keep searching!\n");
             }
-
-            attempts--; // Decrement attempts after each try
-            System.out.println("Eggs Found: " + eggsFound + ", Attempts Left: " + attempts + "\n");
-        }
-
-        //End of game
-        if (eggsFound == 3) {
-            System.out.println("Congratulations! All of the dragon eggs are safe!");
-        } else if (attempts == 0) {
-            System.out.println("Game over! Some dragon eggs remain hidden!");
-            System.out.println("You found " + eggsFound + " Magical Dragon Eggs. Better luck next time!");
-        }
-
-        scanner.close();
-    }
 }
